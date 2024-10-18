@@ -22,7 +22,7 @@ class UrlController extends Controller
             ], 400);
         }
 
-        // Crear el código corto y guardar la URL
+        
         $shortCode = Url::generateUniqueShortCode();
         $url = Url::create([
             'original_url' => $request->input('url'),
@@ -37,4 +37,29 @@ class UrlController extends Controller
             'updatedAt' => $url->updated_at->toIso8601String(),
         ], 201);
     }
+
+
+
+  public function show($shortCode)
+  {
+      
+      $url = Url::where('shortened_url', $shortCode)->first();
+
+     
+      if (!$url) {
+          return response()->json([
+              'message' => 'URL not found'
+          ], 404);
+      }
+
+      
+      return response()->json([
+          'id' => $url->id,
+          'url' => $url->original_url,
+          'shortCode' => $url->shortened_url,
+          'createdAt' => $url->created_at->toIso8601String(),
+          'updatedAt' => $url->updated_at->toIso8601String(),
+      ], 200);
+  }
+
 }

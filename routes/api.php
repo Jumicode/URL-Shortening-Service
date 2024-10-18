@@ -8,4 +8,6 @@ use App\Http\Controllers\UrlController;
 
 Route::post('/shorten', [UrlController::class, 'store']);
 
+Route::get('/shorten/{shortCode}', [UrlController::class, 'show']);
+
 
