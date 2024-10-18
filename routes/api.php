@@ -12,3 +12,4 @@ Route::get('/shorten/{shortCode}', [UrlController::class, 'show']);
 
 Route::put('/shorten/{shortCode}', [UrlController::class, 'update']);
 
+Route::delete('/shorten/{shortCode}', [UrlController::class, 'destroy']);
