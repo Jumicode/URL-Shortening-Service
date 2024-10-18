@@ -10,4 +10,5 @@ Route::post('/shorten', [UrlController::class, 'store']);
 
 Route::get('/shorten/{shortCode}', [UrlController::class, 'show']);
 
+Route::put('/shorten/{shortCode}', [UrlController::class, 'update']);
 
