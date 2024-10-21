@@ -120,5 +120,48 @@ public function destroy($shortCode)
     
     return response()->noContent(); // 204 No Content
 }
+
+
+ public function stats($shortCode)
+ {
+     
+     $url = Url::where('shortened_url', $shortCode)->first();
+
+     
+     if (!$url) {
+         return response()->json([
+             'message' => 'URL no encontrada'
+         ], 404); // Not Found
+     }
+
+     
+     return response()->json([
+         'id' => $url->id,
+         'url' => $url->original_url,
+         'shortCode' => $url->shortened_url,
+         'createdAt' => $url->created_at->toIso8601String(),
+         'updatedAt' => $url->updated_at->toIso8601String(),
+         'accessCount' => $url->access_count, 
+     ], 200); // OK
+ }
+
+ public function redirectToOriginalUrl($shortCode)
+{
+   
+    $url = Url::where('shortened_url', $shortCode)->first();
+
+    
+    if (!$url) {
+        return response()->json([
+            'message' => 'URL no encontrada'
+        ], 404); // Not Found
+    }
+
+ 
+    $url->increment('access_count');
+
+
+    return redirect($url->original_url);
+}
  
 }
