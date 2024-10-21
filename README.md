@@ -1,66 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# URL Shortener API
 
-## About Laravel
+This is a RESTful API built with Laravel for shortening URLs. It allows users to create, retrieve, update, delete, and track statistics of shortened URLs.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Shorten URLs**: Create a short version of a long URL.
+- **Retrieve Original URL**: Get the original long URL using the short code.
+- **Update Shortened URL**: Modify the long URL for an existing short code.
+- **Delete Shortened URL**: Remove a shortened URL from the system.
+- **Statistics**: Track the number of times a shortened URL has been accessed.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Requirements
 
-## Learning Laravel
+- PHP 8.1 or higher
+- Composer
+- Laravel 10
+- MySQL or any other supported database
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Clone the repository:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   ```bash
+   git clone https://github.com/your-username/url-shortener-api.git
+   ```
 
-## Laravel Sponsors
+2. Navigate into the project directory:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   ```bash
+   cd url-shortener-api
+   ```
 
-### Premium Partners
+3. Install dependencies:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+   ```bash
+   composer install
+   ```
 
-## Contributing
+4. Create a copy of the `.env` file:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   ```bash
+   cp .env.example .env
+   ```
 
-## Code of Conduct
+5. Set up your environment variables in the `.env` file (e.g., database settings).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. Generate an application key:
 
-## Security Vulnerabilities
+   ```bash
+   php artisan key:generate
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7. Run the database migrations:
+
+   ```bash
+   php artisan migrate
+   ```
+
+8. Start the local development server:
+
+   ```bash
+   php artisan serve
+   ```
+
+The API should now be accessible at `http://localhost:8000`.
+
+## API Endpoints
+
+### 1. Shorten a URL
+
+- **URL**: `/api/shorten`
+- **Method**: `POST`
+- **Request Body**:
+
+  ```json
+  {
+    "url": "https://www.example.com/some/long/url"
+  }
+  ```
+
+- **Response** (`201 Created`):
+
+  ```json
+  {
+    "id": "1",
+    "url": "https://www.example.com/some/long/url",
+    "shortCode": "abc123",
+    "createdAt": "2021-09-01T12:00:00Z",
+    "updatedAt": "2021-09-01T12:00:00Z"
+  }
+  ```
+
+### 2. Retrieve Original URL
+
+- **URL**: `/api/shorten/{shortCode}`
+- **Method**: `GET`
+- **Response** (`200 OK`):
+
+  Redirects to the original URL.
+
+### 3. Update a Shortened URL
+
+- **URL**: `/api/shorten/{shortCode}`
+- **Method**: `PUT`
+- **Request Body**:
+
+  ```json
+  {
+    "url": "https://www.example.com/some/updated/url"
+  }
+  ```
+
+- **Response** (`200 OK`):
+
+  ```json
+  {
+    "id": "1",
+    "url": "https://www.example.com/some/updated/url",
+    "shortCode": "abc123",
+    "createdAt": "2021-09-01T12:00:00Z",
+    "updatedAt": "2021-09-01T12:30:00Z"
+  }
+  ```
+
+### 4. Delete a Shortened URL
+
+- **URL**: `/api/shorten/{shortCode}`
+- **Method**: `DELETE`
+- **Response** (`204 No Content`):  
+  No response body.
+
+### 5. Get URL Statistics
+
+- **URL**: `/api/shorten/{shortCode}/stats`
+- **Method**: `GET`
+- **Response** (`200 OK`):
+
+  ```json
+  {
+    "id": "1",
+    "url": "https://www.example.com/some/long/url",
+    "shortCode": "abc123",
+    "createdAt": "2021-09-01T12:00:00Z",
+    "updatedAt": "2021-09-01T12:00:00Z",
+    "accessCount": 10
+  }
+  ```
+
+## Running Tests
+
+To run the tests for this project:
+
+```bash
+php artisan test
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and available under the [MIT License](LICENSE).
+```
+https://roadmap.sh/projects/url-shortening-service
+### Key Sections Included:
+1. **Introduction**: Overview of the project.
+2. **Features**: A quick list of what the API does.
+3. **Requirements**: Necessary software for the project.
+4. **Installation**: Steps to set up the project on your local machine.
+5. **API Endpoints**: Detailed instructions on how to use the API.
+6. **Running Tests**: How to execute unit tests.
+7. **License**: Mention of the open-source license.
+
+Make sure to replace `your-username` with your actual GitHub username in the clone URL.
